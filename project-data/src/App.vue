@@ -1,7 +1,17 @@
 <template>
     <div id="app">
         <div v-if="this.$store.state.settings.allowCookies">
-            <b-alert variant="success" show>Good!</b-alert>
+            <b-navbar toggleable="md" type="dark" variant="dark">
+                <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+                <b-navbar-brand to="/">NavBar</b-navbar-brand>
+
+                <b-collapse is-nav id="nav_collapse">
+                    <b-navbar-nav>
+                        <b-nav-item to="settings">Settings</b-nav-item>
+                        <b-nav-item to="randomize">Randomize</b-nav-item>
+                    </b-navbar-nav>
+                </b-collapse>
+            </b-navbar>
         </div>
         <div v-if="!this.$store.state.settings.allowCookies">
             <b-alert variant="info" show class="m-4">
@@ -21,9 +31,25 @@
 <script>
     export default {
         name: 'app',
+        data() {
+            return {
+                settings: false
+            }
+        },
         methods: {
             allowCookies() {
                 this.$store.dispatch("settings/allowCookies");
+            }
+        },
+        watch: {
+            '$route'(nw, old) {
+                switch (nw.path.split("/")[1]) {
+                    case "settings":
+                        this.settings = true;
+                        break;
+                    default:
+                        this.settings = false;
+                }
             }
         }
     }
