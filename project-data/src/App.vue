@@ -1,29 +1,33 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="app">
+        <div v-if="this.$store.state.settings.allowCookies">
+            <b-alert variant="success" show>Good!</b-alert>
+        </div>
+        <div v-if="!this.$store.state.settings.allowCookies">
+            <b-alert variant="info" show class="m-4">
+                This application uses cookies to store settings/preferences. By continuing to the site, you are allowing
+                this application to use these cookies. No personal identification information will be gathered/stored.
+                <div class="d-flex justify-content-end mt-2">
+                    <b-button variant="secondary" size="sm" @click="allowCookies()">Continue to application</b-button>
+                </div>
+            </b-alert>
+        </div>
+        <!--<img src="./assets/logo.png">-->
+        <!--<b-alert variant="danger">Danger Alert</b-alert>-->
+        <!--<router-view></router-view>-->
     </div>
-    <router-view/>
-  </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+    export default {
+        name: 'app',
+        methods: {
+            allowCookies() {
+                this.$store.dispatch("settings/allowCookies");
+            }
+        }
     }
-  }
-}
+</script>
+
+<style>
 </style>
